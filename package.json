@@ -1,0 +1,22 @@
+{
+  "name": "binance-api",
+  "version": "1.0.0",
+  "description": "Binance api",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "pankaryp",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "figlet": "^1.2.1",
+    "fs": "0.0.1-security",
+    "node-binance-api": "^0.9.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10"
+  }
+}
