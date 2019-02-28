@@ -6,7 +6,7 @@
  */
 
 // Require dependencies
-const binance = require('node-binance-api');
+const binance = require('node-binance-api')();
 const fs = require('fs');
 const util = require('util');
 const chalk = require('chalk');
@@ -15,7 +15,7 @@ const figlet = require('figlet');
 const log = console.log;
 
 // Binance connect
-binance().options({
+binance.options({
     APIKEY: '<key>',
     APISECRET: '<secret>',
     useServerTime: true // if you get timestamp errors, synchronize to server time at startup
@@ -35,7 +35,7 @@ figlet('Ducimus', function(err, data) {
  * Open a websocket connection with Binance Websocket API 
  * and get the market depth updates
  */ 
-binance().websockets.depth(['BTCUSDT'], (depth) => {
+binance.websockets.depth(['BTCUSDT'], (depth) => {
     let {e:eventType, E:eventTime, s:symbol, u:updateId, b:bidDepth, a:askDepth} = depth;
     // update of market depth
     log(chalk.blue(symbol + " market depth update"));
@@ -44,7 +44,7 @@ binance().websockets.depth(['BTCUSDT'], (depth) => {
     log(chalk.magenta("Update id: ") + updateId, chalk.magenta("\nEvent time: ") + eventTime);
 
     // Save event time & update id to txt
-    fs.appendFile("market-depth-time.txt", "\ntime:"+eventTime+"\nid:"+updateId, 'utf-8', 
+    fs.appendFile("data/market-depth-time.txt", "\ntime:"+eventTime+"\nid:"+updateId, 'utf-8', 
         function(err) {
             if(err) {
                 return  log(chalk.red(err));
@@ -57,7 +57,7 @@ binance().websockets.depth(['BTCUSDT'], (depth) => {
     log(chalk.magenta("ask: ") + askDepth);
 
     // Write ask on txt
-    fs.appendFile("market-depth-ask.txt", util.inspect(askDepth, { compact: false}), 'utf-8', 
+    fs.appendFile("data/market-depth-ask.txt", util.inspect(askDepth, { compact: false}), 'utf-8', 
         function(err) {
             if(err) {
                 return  log(chalk.red(err));
@@ -70,7 +70,7 @@ binance().websockets.depth(['BTCUSDT'], (depth) => {
     log(chalk.magenta("bid: ") + bidDepth);
 
     // Write bid on txt
-    fs.appendFile("market-depth-bid.txt", util.inspect(bidDepth, { compact: false}), 'utf-8', 
+    fs.appendFile("data/market-depth-bid.txt", util.inspect(bidDepth, { compact: false}), 'utf-8', 
         function(err) {
             if(err) {
                 return  log(chalk.red(err));
@@ -80,3 +80,4 @@ binance().websockets.depth(['BTCUSDT'], (depth) => {
         });
 
 });
+
