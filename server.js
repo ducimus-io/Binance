@@ -13,8 +13,6 @@ const chalk = require('chalk');
 const figlet = require('figlet');
 
 const log = console.log;
-//ETHBTC
-//ETHUSDT
 
 // Binance connect
 binance.options({
@@ -64,8 +62,12 @@ function wsConnection(currency) {
                 log(chalk.green(`${currency} time & id saved!`));
             });
 
-        // Log ask
-        log(chalk.magenta("ask: ") + askDepth);
+        // Check if ask aarray is empty
+        if (askDepth.length === 0) {
+            log(chalk.magenta("ask: ") + chalk.red("EMPTY"));
+        } else {
+            log(chalk.magenta("ask: ") + askDepth);
+        }
 
         // Write ask on txt
         fs.appendFile(`data/${lowCurrency}/${lowCurrency}-md-a.txt`, util.inspect(askDepth, { compact: false}), 'utf-8', 
@@ -77,8 +79,12 @@ function wsConnection(currency) {
                 log(chalk.green(`${currency} ask saved!`));
             });
 
-        // Log bid
-        log(chalk.magenta("bid: ") + bidDepth);
+        // Check if bid aarray is empty
+        if (bidDepth.length === 0) {
+            log(chalk.magenta("bid: ") + chalk.red("EMPTY"));
+        } else {
+            log(chalk.magenta("bid: ") + bidDepth);
+        }
 
         // Write bid on txt
         fs.appendFile(`data/${lowCurrency}/${lowCurrency}-md-b.txt`, util.inspect(bidDepth, { compact: false}), 'utf-8', 
