@@ -13,6 +13,8 @@ const chalk = require('chalk');
 const figlet = require('figlet');
 
 const log = console.log;
+//ETHBTC
+//ETHUSDT
 
 // Binance connect
 binance.options({
@@ -31,54 +33,70 @@ figlet('Ducimus', function(err, data) {
     log(chalk.cyan(data))
 });
 
-/** 
- * Open a websocket connection with Binance Websocket API 
- * and get the market depth updates
- */ 
-binance.websockets.depth(['BTCUSDT'], (depth) => {
-    let {e:eventType, E:eventTime, s:symbol, u:updateId, b:bidDepth, a:askDepth} = depth;
-    // update of market depth
-    log(chalk.blue(symbol + " market depth update"));
 
-    // Keep track of event time
-    log(chalk.magenta("Update id: ") + updateId, chalk.magenta("\nEvent time: ") + eventTime);
+/**
+ * Establish a websocket connection for a symbol
+ * @param currency: Market symbol 
+ */
+function wsConnection(currency) {
 
-    // Save event time & update id to txt
-    fs.appendFile("data/market-depth-time.txt", "\ntime:"+eventTime+"\nid:"+updateId, 'utf-8', 
-        function(err) {
-            if(err) {
-                return  log(chalk.red(err));
-            }
-    
-            log(chalk.green("Time & Id Saved!"));
-        });
+    const lowCurrency = currency.toLowerCase();
 
-    // Log ask
-    log(chalk.magenta("ask: ") + askDepth);
+    /** 
+     * Open a websocket connection with Binance Websocket API 
+     * and get the market depth updates
+     */ 
+    binance.websockets.depth([currency], (depth) => {
+        let {e:eventType, E:eventTime, s:symbol, u:updateId, b:bidDepth, a:askDepth} = depth;
+        // update of market depth
+        log(chalk.blue(symbol + " market depth update"));
 
-    // Write ask on txt
-    fs.appendFile("data/market-depth-ask.txt", util.inspect(askDepth, { compact: false}), 'utf-8', 
-        function(err) {
-            if(err) {
-                return  log(chalk.red(err));
-            }
-    
-            log(chalk.green("Ask Saved!"));
-        });
+        // Keep track of event time
+        log(chalk.magenta("Update id: ") + updateId, chalk.magenta("\nEvent time: ") + eventTime);
 
-    // Log bid
-    log(chalk.magenta("bid: ") + bidDepth);
-
-    // Write bid on txt
-    fs.appendFile("data/market-depth-bid.txt", util.inspect(bidDepth, { compact: false}), 'utf-8', 
-        function(err) {
-            if(err) {
-                return  log(chalk.red(err));
-            }
+        // Save event time & update id to txt
+        fs.appendFile(`data/${lowCurrency}/${lowCurrency}-md-t.txt`, "\ntime:"+eventTime+"\nid:"+updateId, 'utf-8', 
+            function(err) {
+                if(err) {
+                    return  log(chalk.red(err));
+                }
         
-            log(chalk.green("Bid Saved!"));
-        });
-});
+                log(chalk.green(`${currency} time & id saved!`));
+            });
+
+        // Log ask
+        log(chalk.magenta("ask: ") + askDepth);
+
+        // Write ask on txt
+        fs.appendFile(`data/${lowCurrency}/${lowCurrency}-md-a.txt`, util.inspect(askDepth, { compact: false}), 'utf-8', 
+            function(err) {
+                if(err) {
+                    return  log(chalk.red(err));
+                }
+        
+                log(chalk.green(`${currency} ask saved!`));
+            });
+
+        // Log bid
+        log(chalk.magenta("bid: ") + bidDepth);
+
+        // Write bid on txt
+        fs.appendFile(`data/${lowCurrency}/${lowCurrency}-md-b.txt`, util.inspect(bidDepth, { compact: false}), 'utf-8', 
+            function(err) {
+                if(err) {
+                    return  log(chalk.red(err));
+                }
+            
+                log(chalk.green(`${currency} bid saved!`));
+            });
+    });
+}
+
+// Start connections
+wsConnection('BTCUSDT');
+wsConnection('ETHBTC');
+wsConnection('ETHUSDT');
+
 
 
 

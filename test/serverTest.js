@@ -1,21 +1,22 @@
 const expect = require('chai').expect;
+const assert = require('chai').assert;
 const fs = require('fs');
 
-// Data files test
-describe('Data files', function() {
+// Data directories test
+describe('Data directories', function() {
 
-    it("Expect a market-depth-time.txt file", (done) => {
-        expect(fs.existsSync('./data/market-depth-time.txt')).to.be.true;
+    it("Expect a btcusdt directory", (done) => {
+        expect(fs.existsSync('./data/btcusdt')).to.be.true;
         done();
     });
 
-    it("Expect a market-depth-ask.txt file", (done) => {
-        expect(fs.existsSync('./data/market-depth-ask.txt')).to.be.true;
+    it("Expect a ethbtc directory", (done) => {
+        expect(fs.existsSync('./data/ethbtc')).to.be.true;
         done();
     });
 
-    it("Expect a market-depth-bid.txt file", (done) => {
-        expect(fs.existsSync('./data/market-depth-bid.txt')).to.be.true;
+    it("Expect a ethusdt directory", (done) => {
+        expect(fs.existsSync('./data/ethusdt')).to.be.true;
         done();
     });
 });
