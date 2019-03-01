@@ -1,3 +1,10 @@
+# Dependencies
 /node_modules
+
+# Package-lock.json
 package-lock.json
-todo.txt
+
+# Test Data
+data/market-depth-ask.txt
+data/market-depth-bid.txt
+data/market-depth-time.txt

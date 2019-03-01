@@ -78,6 +78,7 @@ binance.websockets.depth(['BTCUSDT'], (depth) => {
         
             log(chalk.green("Bid Saved!"));
         });
-
 });
+
+
 
