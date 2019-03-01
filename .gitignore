@@ -5,6 +5,4 @@
 package-lock.json
 
 # Test Data
-data/market-depth-ask.txt
-data/market-depth-bid.txt
-data/market-depth-time.txt
+/data
