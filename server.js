@@ -23,6 +23,9 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
+// MarketDepth model
+const MarketDepth = require('./models/MarketDepth');
+
 // Binance connect
 binance.options({
     APIKEY: '<key>',
@@ -57,6 +60,17 @@ function wsConnection(currency) {
 
         // update of market depth
         log(chalk.blue(symbol + " market depth update"));
+
+        //-------------------------------------------------------------------
+        const newMarketDepth = new MarketDepth({
+            id: updateId,
+            time:  eventTime,
+            numA: askDepth.length,
+            numB: bidDepth.length
+        });
+
+        newMarketDepth.save().then(marketDepth => res.json(marketDepth));
+        //-------------------------------------------------------------------
 
         // Keep track of event time, id and number of asks/bids
         log(chalk.magenta("Update id: ") + updateId, chalk.magenta("\nEvent time: ") + eventTime, chalk.magenta("\nAsk num: ") 
@@ -137,8 +151,8 @@ function avgVolume(symb) {
 
 // Start connections
 wsConnection('BTCUSDT');
-wsConnection('ETHBTC');
-wsConnection('ETHUSDT');
+//wsConnection('ETHBTC');
+//wsConnection('ETHUSDT');
 
 
 
