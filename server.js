@@ -81,7 +81,7 @@ function wsConnection(currency) {
         timeFile.on('error', function(err) {
             log(chalk.red("There is a problem with the file writting."));
         });
-        timeFile.write("\ntime:"+eventTime+"\nid:"+updateId+"\nask-num:"+askDepth.length+"\nbid-num:"+bidDepth.length); 
+        timeFile.write("time:"+eventTime+"\nid:"+updateId+"\nask-num:"+askDepth.length+"\nbid-num:"+bidDepth.length+"\n"); 
         timeFile.end();
 
         // Write asks in txt
@@ -149,10 +149,10 @@ function avgVolume(symb) {
 });*/
 
 
-// Start connections
+//Start connections
 wsConnection('BTCUSDT');
-//wsConnection('ETHBTC');
-//wsConnection('ETHUSDT');
+wsConnection('ETHBTC');
+wsConnection('ETHUSDT');
 
 
 
