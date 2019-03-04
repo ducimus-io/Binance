@@ -102,10 +102,36 @@ function wsConnection(currency) {
     
 }
 
-// Start connections
+/**
+ * Calculate the avg volume of symbol
+ * @param crypto: Market crypto
+ */
+function avgVolume(symb) {
+    
+    binance.prevDay(symb, (error, prevDay, symbol) => {
+        return (parseInt(prevDay.volume) + parseInt(prevDay.quoteVolume)) /2 ;
+    });
+}
+
+
+binance.prices((error, ticker) => {
+    let allSymbols =  Object.keys(ticker);
+
+    for(s=0; s < allSymbols.length; s++) {
+
+        // TO DO: AVG VOLUME IN USD
+        wsConnection(allSymbols[s]);  
+
+    }
+
+});
+
+
+
+/*// Start connections
 wsConnection('BTCUSDT');
 wsConnection('ETHBTC');
-wsConnection('ETHUSDT');
+wsConnection('ETHUSDT');*/
 
 
 
