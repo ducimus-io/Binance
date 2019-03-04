@@ -10,8 +10,18 @@ const binance = require('node-binance-api')();
 const fs = require('fs');
 const chalk = require('chalk');
 const figlet = require('figlet');
+const mongoose = require('mongoose');
 
 const log = console.log;
+
+// DB Config
+const db = require('./config/keys').mongoURI;
+
+// Connect to MongoDB
+mongoose
+    .connect(db, { useNewUrlParser: true })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
 
 // Binance connect
 binance.options({
@@ -113,25 +123,22 @@ function avgVolume(symb) {
     });
 }
 
-
-binance.prices((error, ticker) => {
+/*binance.prices((error, ticker) => {
     let allSymbols =  Object.keys(ticker);
 
     for(s=0; s < allSymbols.length; s++) {
 
         // TO DO: AVG VOLUME IN USD
-        wsConnection(allSymbols[s]);  
-
+        //wsConnection(allSymbols[s]); 
+        console.log(allSymbols.length); 
     }
-
-});
-
+});*/
 
 
-/*// Start connections
+// Start connections
 wsConnection('BTCUSDT');
 wsConnection('ETHBTC');
-wsConnection('ETHUSDT');*/
+wsConnection('ETHUSDT');
 
 
 
