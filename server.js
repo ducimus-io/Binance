@@ -63,13 +63,16 @@ function wsConnection(currency) {
 
         //-------------------------------------------------------------------
         const newMarketDepth = new MarketDepth({
+            name: lowCurrency,
             id: updateId,
             time:  eventTime,
             numA: askDepth.length,
-            numB: bidDepth.length
+            numB: bidDepth.length,
+            asks: askDepth,
+            bids: bidDepth
         });
 
-        newMarketDepth.save().then(marketDepth => res.json(marketDepth));
+        newMarketDepth.save().then(marketDepth => marketDepth);
         //-------------------------------------------------------------------
 
         // Keep track of event time, id and number of asks/bids
