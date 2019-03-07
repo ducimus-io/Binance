@@ -17,7 +17,7 @@ binance.options({
     useServerTime: true // if you get timestamp errors, synchronize to server time at startup
 });
 
-// MarketDepth model
+// Bring in MarketDepth model
 const MarketDepth = require('../models/MarketDepth');
 
 /**

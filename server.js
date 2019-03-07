@@ -4,8 +4,10 @@ const chalk = require('chalk');
 const figlet = require('figlet');
 const mongoose = require('mongoose');
 
-// Require wsConnection
+// Require ws files
 const wsConnection = require('./ws/wsConnection');
+const quotePrices = require('./ws/quotePrices');
+const volumeChecker = require('./ws/volumeChecker');
 
 const log = console.log;
 
@@ -28,33 +30,14 @@ figlet('Ducimus', function(err, data) {
     log(chalk.cyan(data))
 });
 
-/**
- * Calculate the avg volume of symbol
- * @param crypto: Market crypto
- */
-function avgVolume(symb) {
-    
-    binance.prevDay(symb, (error, prevDay, symbol) => {
-        return (parseInt(prevDay.volume) + parseInt(prevDay.quoteVolume)) /2 ;
-    });
-}
-
-/*binance.prices((error, ticker) => {
-    let allSymbols =  Object.keys(ticker);
-
-    for(s=0; s < allSymbols.length; s++) {
-
-        // TO DO: AVG VOLUME IN USD
-        //wsConnection(allSymbols[s]); 
-        console.log(allSymbols.length); 
-    }
-});*/
+// Get quote prices in USD
+quotePrices();
 
 
 //Start connections
-wsConnection('BTCUSDT');
+/*wsConnection('BTCUSDT');
 wsConnection('ETHBTC');
-wsConnection('ETHUSDT');
+wsConnection('ETHUSDT');*/
 
 
 
