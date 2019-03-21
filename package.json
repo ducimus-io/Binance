@@ -1,0 +1,19 @@
+{
+    "name": "binance-ws-official",
+    "version": "1.0.0",
+    "description": "",
+    "main": "ws.js",
+    "scripts": {
+        "start": "nodemon ws.js"
+    },
+    "author": "pankaryp",
+    "license": "MIT",
+    "dependencies": {
+        "bluebird": "^3.3.1",
+        "config": "^1.28.1",
+        "crypto-js": "^3.1.9-1",
+        "request": "^2.72.0",
+        "ws": "^3.2.0"
+    },
+    "execMap": {}
+}
