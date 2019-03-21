@@ -40,15 +40,15 @@ figlet('Ducimus', function(err, data) {
 
 // Check volume above 20K
 function volumeChecker() { 
-
+    
     binance.prices((error, ticker) => {
         // Get all the symbols on the market
         let allSymbols = Object.keys(ticker);
-
+        
         // Check if the quote part is BTC or ETH
         for (s=0; s<allSymbols.length; s++) {
             if ((allSymbols[s].substr(allSymbols[s].length - 3)) === "BTC" ) {
-
+                
                 // Get symbol's volume
                 binance.prevDay(allSymbols[s], (error, prevDay, symbol) => {
                     
@@ -56,7 +56,7 @@ function volumeChecker() {
                     QuoteCrypto.findOne({ name: 'BTCUSDT' }, function (err, quote) {
                         if ((quote.price * prevDay.quoteVolume) >= 20000) {
                             //SUBSCRIBE TO SYMBOL
-                            console.log("SUBSCRIBED");
+                            console.log("SUBSCRIBED: " + allSymbols[s]);
                         }
                     });
 
@@ -71,7 +71,7 @@ function volumeChecker() {
                     QuoteCrypto.findOne({ name: 'ETHUSDT' }, function (err, quote) {
                         if ((quote.price * prevDay.quoteVolume) > 20000) {
                             //SUBSCRIBE TO SYMBOL
-                            console.log("SUBSCRIBED");
+                            console.log("SUBSCRIBED: " + allSymbols[s]);
                         }
                     });
 
@@ -85,14 +85,25 @@ function volumeChecker() {
 }
 
 // Call volumeChecker
-volumeChecker();
+//volumeChecker();
+
+/*
+TO DO, SUBSCRIBE TO ALL SYMBOLS 
+TO DO, COUNT HOW MANY SYMBOLS HAVE BEEN SAVED TO MONGO
+        AND HOW MANY HAVE BEEN WRITTEN TO TERMINAL
+*/
+binance.prices((error, ticker) => {
+    // Get all the symbols on the market
+    let allSymbols = Object.keys(ticker);
+    
+    // Subscribe to every symbol
+    for (s=0; s<allSymbols.length; s++) {
+        wsConnection(allSymbols[s]);
+    }
+});
 
 
 //Start connections
 /*wsConnection('BTCUSDT');
 wsConnection('ETHBTC');
 wsConnection('ETHUSDT');*/
-
-
-
-
