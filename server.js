@@ -91,7 +91,9 @@ volumeChecker();
 //Start connections
 /*wsConnection('BTCUSDT');
 wsConnection('ETHBTC');
-wsConnection('ETHUSDT');*/
+wsConnection('ETHUSDT');
+wsConnection('BNBBTC');
+wsConnection('BNBUSDT');*/
 
 
 
