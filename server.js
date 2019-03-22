@@ -3,6 +3,7 @@ const binance = require('node-binance-api')();
 const chalk = require('chalk');
 const figlet = require('figlet');
 const mongoose = require('mongoose');
+const axios = require('axios');
 
 // Require ws files
 const wsConnection = require('./ws/wsConnection');
@@ -92,7 +93,7 @@ TO DO, SUBSCRIBE TO ALL SYMBOLS
 TO DO, COUNT HOW MANY SYMBOLS HAVE BEEN SAVED TO MONGO
         AND HOW MANY HAVE BEEN WRITTEN TO TERMINAL
 */
-binance.prices((error, ticker) => {
+/*binance.prices((error, ticker) => {
     // Get all the symbols on the market
     let allSymbols = Object.keys(ticker);
     
@@ -100,10 +101,62 @@ binance.prices((error, ticker) => {
     for (s=0; s<allSymbols.length; s++) {
         wsConnection(allSymbols[s]);
     }
-});
+});*/
 
 
 //Start connections
 /*wsConnection('BTCUSDT');
 wsConnection('ETHBTC');
 wsConnection('ETHUSDT');*/
+
+var prices = {
+    btc: '',
+    eth: ''
+};
+
+var filtered = [];
+
+binance.prices((error, ticker) => {
+    prices.btc = ticker.BTCUSDT;
+    prices.eth = ticker.ETHUSDT;
+    
+    // Get all the symbols on the market
+    let allSymbols = Object.keys(ticker);
+        
+    // Check if the quote part is BTC or ETH
+    for (s=0; s<allSymbols.length; s++) {
+        if ((allSymbols[Object.keys(allSymbols)[s]].substr(allSymbols[Object.keys(allSymbols)[1]].length - 3)) === "BTC" ) {
+
+        
+
+            // Get symbol's volume
+            binance.prevDay(allSymbols[Object.keys(allSymbols)[s]], (error, prevDay, symbol) => {
+                
+                
+
+                // Find the USD price of BTC * volume of symbol
+                if ((prices.btc * prevDay.quoteVolume) >= 20000) {
+                    filtered.push(allSymbols[Object.keys(allSymbols)[s]]);
+                }
+
+            });
+
+        } else if((allSymbols[Object.keys(allSymbols)[s]].substr(allSymbols[Object.keys(allSymbols)[1]].length - 3)) === "ETH") {
+            
+            // Get symbol's volume
+            binance.prevDay(allSymbols[Object.keys(allSymbols)[s]], (error, prevDay, symbol) => {
+                
+                // Find the USD price of ETH * volume of symbol
+                if ((prices.eth * prevDay.quoteVolume) > 20000) {
+                    filtered.push(allSymbols[Object.keys(allSymbols)[s]]);
+                }
+
+            });
+            
+        }
+    } 
+
+});
+
+
+
