@@ -5,7 +5,6 @@
  * disconnected at the 24 hour mark
  */
 const binance = require('node-binance-api')();
-const fs = require('fs');
 const chalk = require('chalk');
 
 const log = console.log;

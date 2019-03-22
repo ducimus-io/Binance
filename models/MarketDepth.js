@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create Schema
+// Create MarketDepth Schema
 const MarketDepthSchema = new Schema({
     name: {
         type: String,
