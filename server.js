@@ -37,7 +37,7 @@ var prices = {
 // Array of filtered by volume Symbols
 var filtered = [];
 
-// Check for symbols above 20k volume
+// Check for symbols above 20k 
 binance.prices((error, ticker) => {
     // Init USD prices of BTC and ETH
     prices.btc = ticker.BTCUSDT;
