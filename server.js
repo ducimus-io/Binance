@@ -114,6 +114,9 @@ var prices = {
     eth: ''
 };
 
+var btcItems = [];
+var ethItems = [];
+
 var filtered = [];
 
 binance.prices((error, ticker) => {
@@ -127,34 +130,52 @@ binance.prices((error, ticker) => {
     for (s=0; s<allSymbols.length; s++) {
         if ((allSymbols[Object.keys(allSymbols)[s]].substr(allSymbols[Object.keys(allSymbols)[1]].length - 3)) === "BTC" ) {
 
-        
-
-            // Get symbol's volume
-            binance.prevDay(allSymbols[Object.keys(allSymbols)[s]], (error, prevDay, symbol) => {
-                
-                
-
-                // Find the USD price of BTC * volume of symbol
-                if ((prices.btc * prevDay.quoteVolume) >= 20000) {
-                    filtered.push(allSymbols[Object.keys(allSymbols)[s]]);
-                }
-
-            });
+            btcItems.push(allSymbols[Object.keys(allSymbols)[s]]);
 
         } else if((allSymbols[Object.keys(allSymbols)[s]].substr(allSymbols[Object.keys(allSymbols)[1]].length - 3)) === "ETH") {
             
-            // Get symbol's volume
-            binance.prevDay(allSymbols[Object.keys(allSymbols)[s]], (error, prevDay, symbol) => {
-                
-                // Find the USD price of ETH * volume of symbol
-                if ((prices.eth * prevDay.quoteVolume) > 20000) {
-                    filtered.push(allSymbols[Object.keys(allSymbols)[s]]);
-                }
-
-            });
+            ethItems.push(allSymbols[Object.keys(allSymbols)[s]]);
             
         }
     } 
+
+    console.log(btcItems.length);
+    console.log(ethItems.length);
+
+    
+
+    // Get symbol's volume
+    binance.prevDay(false, (error, prevDay) => {
+        for ( let obj of prevDay ) {
+
+            let symbol = obj.symbol;
+            let volume = obj.volume;
+
+            if ((symbol.substr(symbol.length - 3)) === "BTC" ) {
+                if ((prices.btc * volume) > 20000) {
+                    filtered.push(symbol);
+                }
+            } else if((symbol.substr(symbol.length - 3)) === "ETH") {
+                if ((prices.eth * volume) > 20000) {
+                    filtered.push(symbol);
+                }
+            }
+            
+            
+        }
+
+        console.log("Yea boi: "+ filtered.length);
+
+        // SUB TO FILTERED SYMBOLS
+        for(let f of filtered) {
+            wsConnection(f);
+        }
+    });
+
+    
+
+    
+    
 
 });
 

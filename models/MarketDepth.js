@@ -25,11 +25,9 @@ const MarketDepthSchema = new Schema({
     },
     asks: {
         type: String,
-        required: true
     },
     bids: {
         type: String,
-        required: true
     }
 });
 
